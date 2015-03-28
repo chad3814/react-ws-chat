@@ -1,0 +1,30 @@
+{
+    "name": "react-ws-chat",
+    "version": "0.0.1",
+    "description": "reactjs chat interface using ws",
+    "main": "server.js",
+    "dependencies": {
+        "express": "latest",
+        "ws-protocol": "0.0.1"
+    },
+    "devDependencies": {},
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node server.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/chad3814/react-ws-chat"
+    },
+    "keywords": [
+        "react",
+        "websocket",
+        "ws",
+        "chat"
+    ],
+    "author": "Chad Walker",
+    "bugs": {
+        "url": "https://github.com/chad3814/react-ws-chat/issues"
+    },
+    "homepage": "https://github.com/chad3814/react-ws-chat"
+}
