@@ -20,8 +20,6 @@ var server = http.createServer(app);
 var protocol = new WSProtocol(server, {});
 
 protocol.on('client', function (client) {
-    console.log('new connection', client);
-
     protocol.broadcast({
         action: 'join',
         id: client.id

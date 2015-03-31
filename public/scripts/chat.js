@@ -1,9 +1,6 @@
 'use strict';
 /*global Showdown, React, unescape*/
 var converter = new Showdown.converter();
-var convertToUtf8 = function (str) {
-    return unescape(encodeURIComponent(str));
-};
 
 var PublicMessage = React.createClass({
     render: function () {
@@ -46,27 +43,25 @@ var UserName = React.createClass({
 
 var MessageBox = React.createClass({
     handlePublicMessage: function(message) {
-        console.log('messageBox handleMessageSubmit', this.state.ws, message);
-        if (this.state.ws) {
-            var data = JSON.stringify({action: 'broadcast', message: message});
-            data = convertToUtf8(data);
-            var packet = Packetizer.createPacket(new jDataView(data));
-            console.log('sending packet', packet.getBytes(packet.byteLength, 0));
-            this.state.ws.send(packet.getBytes(packet.byteLength, 0));
+        console.log('messageBox handleMessageSubmit', this.state.protocol, message);
+        if (this.state.protocol) {
+            var data = {action: 'broadcast', message: message};
+            console.log('sending packet', data);
+            this.state.protocol.send(data);
         }
     },
     handleChangeUserName: function(user_name) {
         console.log('messageBox handleChangeUserName', user_name);
-        if (this.state.ws) {
-            var data = JSON.stringify({action: 'set_user', user_name: user_name});
-            data = convertToUtf8(data);
-            var packet = Packetizer.createPacket(new jDataView(data));
-            console.log('sending packet', packet.getBytes(packet.byteLength, 0));
-            this.state.ws.send(packet.getBytes(packet.byteLength, 0));
+        if (this.state.protocol) {
+            var data = {action: 'set_user', user_name: user_name};
+            console.log('sending packet', data);
+            this.state.protocol.send(data);
+        } else {
+            console.log('no protocol in state');
         }
     },
     getInitialState: function() {
-        return {messages: [{type:'welcome'}], users: [], ws: null, id: -1};
+        return {messages: [{type:'welcome'}], users: [], protocol: null, id: -1};
     },
     componentDidMount: function() {
         console.log('componentDidMount');
@@ -132,6 +127,7 @@ var MessageBox = React.createClass({
                 return;
             }
         }.bind(this));
+        this.setState({protocol: protocol});
     },
     render: function() {
         return (
